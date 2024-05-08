@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>USER MANAGEMENT APPLICATION</title>
+    <!-- Including AngularJS library -->
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script>
+        // Define an AngularJS module named "userMgmtApp"
+        var app = angular.module("userMgmtApp", []);
+
+        // Define a controller named "userMgmtAppCntrl" within the "userMgmtApp" module
+        app.controller("userMgmtAppCntrl", function($scope) {
+            // Initialize an array of users with sample data
+            $scope.users = [
+                {'name':"Dr. Harish Kumar BT", 'email':'harish.bitcse82@gmail.com', 'editing':false},
+                {'name':'ABC', 'email':'abc@gmail.com', 'editing':false},
+                {'name':'XYZ', 'email':'xyz@gmail.com', 'editing':false}
+            ];
+
+            // Function to create a new user
+            $scope.createUser = function() {
+                // Check if both user name and email are provided
+                if ($scope.newUserName && $scope.newUserEmail) {
+                    // Create a new user object
+                    var u = {
+                        'name': $scope.newUserName,
+                        'email': $scope.newUserEmail,
+                        'editing': false
+                    };
+                    // Add the new user to the array of users
+                    $scope.users.push(u);
+                    // Clear the input fields
+                    $scope.newUserName = '';
+                    $scope.newUserEmail = '';
+                } else {
+                    // Alert if either user name or email is missing
+                    alert("Please provide the user name and email id");
+                }
+            };
+
+            // Function to set editing flag to true for reading user details
+            $scope.readUser = function(user) {
+                user.editing = true;
+            };
+
+            // Function to set editing flag to false for updating user details
+            $scope.updateUser = function(user) {
+                user.editing = false;
+            };
+
+            // Function to delete a user
+            $scope.deleteUser = function(user) {
+                // Confirmation prompt before deleting the user
+                var yes = confirm("Are you sure you want to delete");
+                if (yes == true) {
+                    // Find the index of the user in the array and remove it
+                    var index = $scope.users.indexOf(user);
+                    $scope.users.splice(index, 1);
+                }
+            };
+        });
+    </script>
+</head>
+<body ng-app="userMgmtApp"> <!-- AngularJS application initialized -->
+
+    <h1>USER MANAGEMENT APPLICATION</h1>
+
+    <!-- AngularJS controller "userMgmtAppCntrl" -->
+    <div ng-controller="userMgmtAppCntrl">
+        <!-- Input fields for entering user name and email -->
+        Enter the User Name: <input type="text" ng-model="newUserName">
+        Enter the User Email: <input type="text" ng-model="newUserEmail">
+        <!-- Button to create a new user -->
+        <button ng-click="createUser()">Create</button>
+        <br/><br/>
+
+        <!-- Table to display user details -->
+        <table border="1">
+            <tr>
+                <th>SLNO</th>
+                <th>NAME</th>
+                <th>EMAIL</th>
+                <th>READ</th>
+                <th>UPDATE</th>
+                <th>DELETE</th>
+            </tr>
+            <!-- Using ng-repeat to iterate over the array of users -->
+            <tr ng-repeat="user in users">
+                <!-- Displaying serial number -->
+                <td>{{$index+1}}</td>
+                <!-- Displaying user name with an input field for editing -->
+                <td>
+                    <span ng-hide="user.editing">{{user.name}}</span>&nbsp;&nbsp;&nbsp;&nbsp
+                    <input type="text" ng-show="user.editing" ng-model="user.name">
+                </td>
+                <!-- Displaying user email with an input field for editing -->
+                <td>
+                    <span ng-hide="user.editing">{{user.email}}</span>
+                    <input type="text" ng-show="user.editing" ng-model="user.email">
+                </td>
+                <!-- Buttons to read, update, and delete user details -->
+                <td><button ng-click="readUser(user)">Read</button></td>
+                <td><button ng-click="updateUser(user)">Update</button></td>
+                <td><button ng-click="deleteUser(user)">Delete</button></td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>

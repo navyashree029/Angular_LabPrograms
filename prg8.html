@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Item Management Application</title>
+    <!-- Including AngularJS library -->
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <!-- JavaScript code for AngularJS application -->
+    <script>
+        // Defining an AngularJS module named "itemMgmtApp"
+        var app = angular.module("itemMgmtApp", []);
+
+        // Creating a controller named "itemMgmtAppCntrl" within the "itemMgmtApp" module
+        app.controller("itemMgmtAppCntrl", function($scope) {
+            // Initializing an array "itemList" containing some items
+            $scope.itemList = ['Pen', 'Pencil', 'Eraser', 'Book'];
+
+            // Function to add an item to the list
+            $scope.addItem = function() {
+                if ($scope.newItem) {
+                    // Check if the item is not already in the list
+                    if ($scope.itemList.indexOf($scope.newItem) == -1) {
+                        // Add the new item to the list
+                        $scope.itemList.push($scope.newItem);
+                    } else {
+                        // Show alert if the item is already in the list
+                        alert('This item is already there in the item collection');
+                    }
+                } else {
+                    // Show alert if no item is entered
+                    alert('Please Enter the item to add');
+                }
+            }
+
+            // Function to remove an item from the list
+            $scope.removeItem = function(item) {
+                // Confirmation prompt before removing the item
+                var yes = confirm("Are you sure you want to delete " + item);
+                if (yes == true) {
+                    // Find the index of the item in the list and remove it
+                    var index = $scope.itemList.indexOf(item);
+                    $scope.itemList.splice(index, 1);
+                }
+            }
+        });
+    </script>
+</head>
+<body ng-app="itemMgmtApp"> <!-- AngularJS application initialized -->
+
+    <h1>Item Management Application</h1>
+
+    <!-- AngularJS controller "itemMgmtAppCntrl" -->
+    <div ng-controller="itemMgmtAppCntrl">
+        <!-- Input field to add a new item -->
+        Enter an item to add: <input type="text" ng-model="newItem">
+        <!-- Button to add the item -->
+        <button ng-click="addItem()">ADD</button>
+        <br/><br/>
+        <b>List of Items</b>
+
+        <!-- Displaying list of items in a table -->
+        <table border="1">
+            <tr>
+                <th>SLNO</th>
+                <th>Item</th>
+                <th>Remove</th>
+            </tr>
+            <!-- Using ng-repeat to iterate over itemList array -->
+            <tr ng-repeat="item in itemList">
+                <!-- Displaying serial number -->
+                <td>{{$index+1}}</td>
+                <!-- Displaying item name -->
+                <td>{{item}}</td>
+                <!-- Button to remove the item -->
+                <td><button ng-click="removeItem(item)">Remove</button></td>
+            </tr>
+        </table>
+        <br/>
+        <!-- Displaying total number of items -->
+        Total Number of Items=<b>{{itemList.length}}</b>
+    </div>
+</body>
+</html>
